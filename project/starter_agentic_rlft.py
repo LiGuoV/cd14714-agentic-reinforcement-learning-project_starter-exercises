@@ -138,7 +138,7 @@ def train_model_with_dpo(
     if not os.path.exists(csv_file_path):
         print(f"Error: CSV file not found at {csv_file_path}")
         return
-    print("\n--- Starting DPO Training Process ---")
+    print("\n Starting DPO Training Process ")
     print(f"Loading traces from {csv_file_path}...")
     preference_dataset = create_preference_dataset_from_traces(csv_file_path)
     if preference_dataset is None or len(preference_dataset) == 0:
@@ -221,13 +221,13 @@ def run_local_agent_evaluation(
        List of evaluation result dictionaries
    """
 
-   print(f"\n--- Running Full Local Evaluation for {model_type.upper()} Model ---")
+   print(f"\n Running Full Local Evaluation for {model_type.upper()} Model ")
    results = []
    
    for persona_idx, persona in enumerate(system_prompt_configurations):
        for scenario in test_scenarios:
            scenario_id = f"{scenario['scenario_id']}_p{persona_idx}"
-           print(f"--- Scenario {scenario_id} ({model_type}, {persona['name']}) ---")
+           print(f" Scenario {scenario_id} ({model_type}, {persona['name']}) ")
            true_outcome = get_true_outcome(scenario['ground_truth'])            
            
            current_agent = NPC(

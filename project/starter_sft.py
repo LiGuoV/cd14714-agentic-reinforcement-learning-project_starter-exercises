@@ -21,8 +21,8 @@ from npcpy.npc_compiler import NPC
 from npcpy.llm_funcs import get_llm_response
 
 
-### Core data classes
-from data_classes import  TimeSlot, ConferenceSimulator, PersonDescriptor, safe_extract_json
+#### Core data classes
+from data_classes import TimeSlot, ConferenceSimulator, PersonDescriptor, safe_extract_json, MeetingPredictor
 
 
 
@@ -81,7 +81,7 @@ def run_sft_fine_tuning(config: SFTConfig, train_examples: List[Dict] = None, va
             text = f"<start_of_turn>user\n{example['input_text']}<end_of_turn>\n<start_of_turn>model\n{target_str}<end_of_turn>"
             formatted_examples.append({"text": text})
     else:
-        print("--- Using provided training examples ---")
+        print(" Using provided training examples ")
         formatted_examples = []
         for example in train_examples:
             target_str = json.dumps(example['target_json_output'])
@@ -94,7 +94,7 @@ def run_sft_fine_tuning(config: SFTConfig, train_examples: List[Dict] = None, va
     dataset = Dataset.from_list(formatted_examples)
     print(f"Dataset created with {len(dataset)} examples")
     
-    print(f"\n--- Configuring Model ('{config.base_model_name}') for SFT ---")
+    print(f"\n Configuring Model ('{config.base_model_name}') for SFT ")
     
     model = AutoModelForCausalLM.from_pretrained(config.base_model_name, 
                                                  trust_remote_code=True, 
@@ -134,7 +134,7 @@ def run_sft_fine_tuning(config: SFTConfig, train_examples: List[Dict] = None, va
                          peft_config=peft_config, 
                          args=training_args)
 
-    print("\n--- Starting Supervised Fine-Tuning ---")
+    print("\n Starting Supervised Fine-Tuning ")
     device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
     training_losses = []
     validation_correlations = []
@@ -210,7 +210,7 @@ def run_sft_fine_tuning(config: SFTConfig, train_examples: List[Dict] = None, va
     
 
 if __name__ == "__main__":
-    print("--- STEP 1: Generating SFT Data for Prediction Model ---")
+    print(" STEP 1: Generating SFT Data for Prediction Model ")
     sft_examples_to_generate = 2000
     
     os.makedirs("data", exist_ok=True)
@@ -231,7 +231,7 @@ if __name__ == "__main__":
         sft_dataset_examples.append(example)
     print(f"Loaded {len(sft_dataset_examples)} existing examples")
     
-    print(f"\n--- Sample Training Examples ---")
+    print(f"\n Sample Training Examples ")
     for i in range(min(3, len(sft_dataset_examples))):
         example = sft_dataset_examples[i]
         print(f"\nExample {i + 1}:")
@@ -239,7 +239,7 @@ if __name__ == "__main__":
         print(f"Target: {example['target_json_output']}")
         print(f"Ground Truth: {example['ground_truth_prob']:.3f}")
 
-    print("\n--- STEP 2: Fine-Tuning the Gemma-270m Prediction Model ---")
+    print("\n STEP 2: Fine-Tuning the Gemma-270m Prediction Model ")
     sft_config = SFTConfig()
             
     if torch.cuda.is_available():
@@ -266,7 +266,7 @@ if __name__ == "__main__":
 
     run_sft_fine_tuning(sft_config, train_examples, val_examples)
 
-    print("\n--- STAGE 2 would begin here ---")
+    print("\n STAGE 2 would begin here ")
     print("Next steps would involve:")
     print(' With your fine tuned model saved, we can now start building our agent traces')
     print(' We dont know if this SFT model will be helpful truly, so we need to explore many possible ways it could be used in different scenarios and compare its effectiveness to other methods and tools')

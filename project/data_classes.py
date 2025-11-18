@@ -7,7 +7,7 @@ from peft import PeftModel
 import random
 import torch 
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 def calculate_accuracy_metrics(results: List[Dict]):
@@ -310,7 +310,7 @@ def run_local_agent_evaluation(
         List of evaluation result dictionaries
     """
 
-    print(f"\n--- Running Full Local Evaluation for {model_type.upper()} Model ---")
+    print(f"\n Running Full Local Evaluation for {model_type.upper()} Model ")
     results = []
     def custom_llm_response(prompt, 
                             model_name=None, 
@@ -339,7 +339,7 @@ def run_local_agent_evaluation(
     for persona_idx, persona in enumerate(system_prompt_configurations):
         for scenario in test_scenarios:
             scenario_id = f"{scenario['scenario_id']}_p{persona_idx}"
-            print(f"--- Scenario {scenario_id} ({model_type}, {persona['name']}) ---")
+            print(f" Scenario {scenario_id} ({model_type}, {persona['name']}) ")
             true_outcome = get_true_outcome(scenario['ground_truth'])            
             original_get_llm_response = None
             try:

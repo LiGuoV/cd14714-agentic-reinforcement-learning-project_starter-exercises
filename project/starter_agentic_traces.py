@@ -44,7 +44,7 @@ def calculate_reward(trace: Dict[str, Any]) -> float:
         return 0.1
 
 
-### Core data classes
+#### Core data classes
 from data_classes import  TimeSlot, ConferenceSimulator, PersonDescriptor, safe_extract_json
 system_prompt_configurations = [
     {
@@ -92,7 +92,7 @@ Use tools to assess time efficiency and return on investment. Only recommend mee
 that represent highly efficient use of time for both parties."""
     }
 ]
-# THE ABOVE ARE PROVIDED FOR SIMPLICITY. YOU MAY TWEAK THESE AS THEY SEE FIT
+# THE ABOVE ARE PROVIDED FOR SIMPLICITY. LEARNERS MAY TWEAK THESE AS THEY SEE FIT
 # TO FURTHER IMPROVE THE QUALITY OF THE RESPONSES AND TRAINING DATA.
 
 
@@ -221,7 +221,7 @@ def predict_follow_up_potential(person_a_desc: str, person_b_desc: str, time_slo
 
 
 
-### Set up your fine tuning predictor tool!
+#### Set up your fine tuning predictor tool!
 def predict_meeting_success_tool(person_a_desc: str, person_b_desc: str, time_slot: str) -> str:
     """
     Predicts the probability of a successful meeting between two people at a given time slot.
@@ -382,7 +382,7 @@ def generate_agent_traces_for_training(num_scenarios_per_agent: int) -> List[Dic
     traces_collector = AgentTraceCollector()
     descriptor = PersonDescriptor(temperature=0.8)
     for config in system_prompt_configurations:
-        print(f"\n--- Generating traces for agent: {config['name']} ---")
+        print(f"\n Generating traces for agent: {config['name']} ")
         for j in range(num_scenarios_per_agent):
             current_agent = NPC(
                 name=config["name"].lower(),
